@@ -80,7 +80,7 @@ if __name__ == "__main__":
                 "largest_object_coordinates": largest_object
             }
 
-            print(json.dumps(output_data, indent=2))
+            print(json.dumps(output_data))
 
         except Exception as e:
             print(f"An unexpected error occurred while processing '{filename}': {e}. Skipping.")
