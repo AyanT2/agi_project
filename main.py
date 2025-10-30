@@ -3,9 +3,7 @@ import json
 import numpy as np
 from scipy.ndimage import label
 
-
 def find_largest_object(grid):
-
     grid = np.array(grid)
     if grid.size == 0:
         return []
@@ -18,7 +16,6 @@ def find_largest_object(grid):
 
     for color in unique_colors:
         mask = (grid == color)
-
         labeled_array, num_features = label(mask, structure=connectivity_structure)
 
         if num_features > 0:
@@ -34,6 +31,8 @@ def find_largest_object(grid):
 
 if __name__ == "__main__":
     data_directory = os.path.join('data', 'training')
+    output_filename = 'output.txt'
+    all_results = []
 
     try:
         all_files = [f for f in os.listdir(data_directory) if f.endswith('.json')]
@@ -71,7 +70,6 @@ if __name__ == "__main__":
                 data = json.load(f)
 
             puzzle_grid = data['train'][0]['input']
-
             largest_object = find_largest_object(puzzle_grid)
 
             output_data = {
@@ -80,9 +78,20 @@ if __name__ == "__main__":
                 "largest_object_coordinates": largest_object
             }
 
-            print(json.dumps(output_data))
+            all_results.append(output_data)
+            print("Successfully processed and added to results.")
 
         except Exception as e:
             print(f"An unexpected error occurred while processing '{filename}': {e}. Skipping.")
+
+    try:
+        with open(output_filename, 'w') as f:
+            for result in all_results:
+                json_string = json.dumps(result, separators=(',', ':'))
+                f.write(json_string + '\n')
+
+        print(f"\n--- All results have been saved to '{output_filename}' ---")
+    except IOError as e:
+        print(f"Error writing to file '{output_filename}': {e}")
 
     print("\n--- Script finished ---")
