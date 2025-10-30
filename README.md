@@ -1,6 +1,4 @@
-========================================
 Largest Object Finder for JSON Puzzles
-========================================
 
 
 Description
