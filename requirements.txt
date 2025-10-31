@@ -1,2 +1,6 @@
 numpy
 scipy
+
+Included Dependencies:
+os
+json
